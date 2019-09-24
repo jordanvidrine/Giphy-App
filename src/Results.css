@@ -1,0 +1,9 @@
+.Results {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 600px;
+  width: 80%;
+  max-width: 900px;
+  align-content: center;
+}
