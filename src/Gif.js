@@ -3,7 +3,7 @@ import './Gif.css'
 
 class Gif extends Component {
   static defaultProps = {
-    colors: ['#ffe066','#247ba0','#70c1b3','#7078c1','#e65c5c']
+    colors: ['rgba(255, 224, 102, 0.75)','rgba(36, 123, 159, 0.75)','rgba(112, 193, 179, 0.75)','rgba(112, 120, 193, 0.75)','rgba(230, 92, 92, 0.75)']
   }
   render() {
 
@@ -12,11 +12,11 @@ class Gif extends Component {
     }
 
     return (
-      <div className="Gif" style={backgroundColor}>
+      <div className="Gif">
         <video className="Gif-media" autoPlay loop>
           <source src={this.props.imgSrc} type="video/mp4"/>
         </video>
-        <p className="Gif-copy" title="Copy to clipboard"><i className="far fa-copy"></i></p>
+        <div className="Gif-copy" title="Copy to clipboard" style={backgroundColor}><i className="far fa-copy fa-3x Gif-icon"></i></div>
       </div>
     )
   }

@@ -5,7 +5,10 @@ import { DATA, DATATWO } from './exampleData'
 
 class Results extends Component {
   render() {
-    console.log('rendering')
+    // let vids = DATA.data.map(gif => gif.images.fixed_width.mp4)
+    // let gifs = vids.map((url) => {
+    //   return <Gif imgSrc={url} key={url}/>
+    // }).splice(0,15)
     let gifs = this.props.gifsToRender.map((url) => {
       return <Gif imgSrc={url} key={url}/>
     })
