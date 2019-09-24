@@ -36,6 +36,7 @@ class App extends Component {
       gifs: gifUrls,
       lastQuery: query,
       input: '',
+      currentPage: 0,
     })
 
   }
@@ -56,8 +57,9 @@ class App extends Component {
   }
 
   next(e) {
-    if (this.state.currentPage * this.state.perPage > this.state.gifs.length) {
-      return
+    console.log(((this.state.currentPage+1) * (this.state.perPage)))
+    if (((this.state.currentPage+1) * (this.state.perPage)) >= this.state.gifs.length) {
+      return false;
     }
     else {
       this.setState({
@@ -68,6 +70,7 @@ class App extends Component {
   }
 
   render() {
+
     let indexToSpliceFrom = this.state.currentPage * this.state.perPage
     let gifsToRender = Array.from(this.state.gifs).splice(indexToSpliceFrom, this.state.perPage)
 

@@ -5,9 +5,9 @@ import { DATA, DATATWO } from './exampleData'
 
 class Results extends Component {
   render() {
-
-    let gifs = this.props.gifsToRender.map((url,idx) => {
-      return <Gif imgSrc={url} key={idx}/>
+    console.log('rendering')
+    let gifs = this.props.gifsToRender.map((url) => {
+      return <Gif imgSrc={url} key={url}/>
     })
 
     return (
