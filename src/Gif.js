@@ -8,19 +8,9 @@ class Gif extends Component {
   }
   render() {
 
-    let clipboard = new Clipboard('.Gif')
-    clipboard.on('success', function(e) {
-      console.info('Action:', e.action);
-    })
-
-    function copyText(e) {
-      let text;
-      if (e.target.hasAttribute('data-link')) {
-        navigator.clipboard.writeText(e.target.attributes["data-link"].nodeValue).then(() => {} , (err) => console.log(err))
-      } else {
-        navigator.clipboard.writeText(e.target.parentNode.attributes["data-link"].nodeValue).then(() => {} , (err) => console.log(err))
-      }
-    }
+    // CLIPBOARDJS -> copys gif link to clipboard
+    // selects "data-clipboard-text" from Gif div below
+    new Clipboard('.Gif')
 
     let backgroundColor = {
       backgroundColor: this.props.colors[Math.floor(Math.random()*this.props.colors.length)]
@@ -31,7 +21,7 @@ class Gif extends Component {
         <video className="Gif-media" autoPlay loop>
           <source src={this.props.imgSrc} type="video/mp4"/>
         </video>
-        <div data-link={this.props.gifUrl} className="Gif-copy" title="Copy to clipboard" style={backgroundColor}><i className="far fa-copy fa-3x Gif-icon"></i></div>
+        <div data-link={this.props.gifUrl} className="Gif-copy" title="Copy to clipboard" style={backgroundColor} onClick={this.props.onClick}><i className="far fa-copy fa-3x Gif-icon"></i></div>
       </div>
     )
   }

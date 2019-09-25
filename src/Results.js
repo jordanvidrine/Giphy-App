@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './Results.css'
 import Gif from './Gif'
-import { DATA, DATATWO } from './exampleData'
+// import { DATA, DATATWO } from './exampleData'
 
 class Results extends Component {
   render() {
@@ -10,17 +10,12 @@ class Results extends Component {
     //   return <Gif imgSrc={url} key={url}/>
     // }).splice(0,15)
     let gifs = this.props.gifsToRender.map(gif => {
-      return <Gif imgSrc={gif.mp4} key={gif.mp4} gifUrl={gif.gifUrl}/>
+      return <Gif imgSrc={gif.mp4} key={gif.mp4} gifUrl={gif.gifUrl} onClick={this.props.onClick}/>
     })
 
 
     return (
       <div className='Results'>
-      {this.props.hasError ? (
-        <span className="Results-error">Request limit reached!</span>
-      ) : (
-        null
-      )}
         {gifs}
       </div>
     )
