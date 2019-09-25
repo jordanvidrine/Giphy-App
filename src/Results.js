@@ -9,12 +9,18 @@ class Results extends Component {
     // let gifs = vids.map((url) => {
     //   return <Gif imgSrc={url} key={url}/>
     // }).splice(0,15)
-    let gifs = this.props.gifsToRender.map((url) => {
-      return <Gif imgSrc={url} key={url}/>
+    let gifs = this.props.gifsToRender.map(gif => {
+      return <Gif imgSrc={gif.mp4} key={gif.mp4} gifUrl={gif.gifUrl}/>
     })
+
 
     return (
       <div className='Results'>
+      {this.props.hasError ? (
+        <span className="Results-error">Request limit reached!</span>
+      ) : (
+        null
+      )}
         {gifs}
       </div>
     )

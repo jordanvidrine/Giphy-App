@@ -1,9 +1,8 @@
 .Results {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  height: 600px;
-  width: 80%;
-  max-width: 900px;
-  align-content: center;
+	display: flex;
+	height: auto;
+	width: 100%;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
 }

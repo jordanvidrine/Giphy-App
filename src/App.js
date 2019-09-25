@@ -164,16 +164,52 @@ class App extends Component {
     super(props)
     this.state = {
       input: '',
-      gifs: [...TEST_DATA],
+      gifs: [],
       lastQuery: '',
       perPage: 15,
       currentPage: 0,
       currentSection: 0,
+      error: false,
+      running: false,
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.prev = this.prev.bind(this)
     this.next = this.next.bind(this)
+  }
+
+  async componentDidMount() {
+
+    if (this.state.gifs.length === 0) {
+    let randomGifs = []
+
+    for (let i = 0; i <= 4; i++) {
+      let response = await fetch(`https://api.giphy.com/v1/gifs/random?api_key=${process.env.REACT_APP_GIPHY_KEY}&tag=&rating=G`)
+
+      let data = await response.json()
+
+      if (data.meta.status === 200) {
+          randomGifs.push({
+            mp4: data.data.images.fixed_width.mp4,
+            gifUrl: data.data.images.downsized.url
+          })
+        } else if (data.meta.status === 429) {
+        let error = true;
+        this.setState({
+          ...this.state,
+          gifs: [...randomGifs],
+          error,
+        })
+      }
+    }
+
+    this.setState({
+      ...this.state,
+      gifs: [...randomGifs]
+    })
+
+  }
+
   }
 
   async handleSubmit(e) {
@@ -182,19 +218,41 @@ class App extends Component {
     let response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=${process.env.REACT_APP_GIPHY_KEY}&q=${this.state.input}&limit=75&offset=0&rating=G&lang=en`)
 
     let data = await response.json()
+
     let gifUrls = [];
+    let error = false;
 
-    data.data.forEach((gif,idx) => {
-      gifUrls.push(gif.images.fixed_width.mp4)
-    })
+    if (data.meta.status === 200) {
+      data.data.forEach(gif => {
+        gifUrls.push({
+          mp4: gif.images.fixed_width.mp4,
+          gifUrl: gif.images.downsized.url
+        })
+      })
 
-    this.setState({
-      ...this.state,
-      gifs: [...gifUrls],
-      lastQuery: query,
-      input: '',
-      currentPage: 0,
-    })
+      this.setState({
+        ...this.state,
+        gifs: [...gifUrls],
+        lastQuery: query,
+        input: '',
+        currentPage: 0,
+        error,
+        running: true,
+      })
+
+    } else if (data.meta.status === 429) {
+      error = true;
+
+      this.setState({
+        ...this.state,
+        gifs: [...this.state.gifs],
+        lastQuery: query,
+        input: '',
+        currentPage: 0,
+        error,
+      })
+
+    }
 
   }
 
@@ -207,18 +265,21 @@ class App extends Component {
 
   prev(e) {
     if (this.state.currentPage === 0) return;
-    else this.setState({
+    else {
+      // window.scrollTo(0,0)
+      this.setState({
       ...this.state,
       currentPage: this.state.currentPage - 1
     })
+    }
   }
 
   next(e) {
-    console.log(((this.state.currentPage+1) * (this.state.perPage)))
     if (((this.state.currentPage+1) * (this.state.perPage)) >= this.state.gifs.length) {
       return false;
     }
     else {
+      // window.scrollTo(0,0)
       this.setState({
       ...this.state,
       currentPage: this.state.currentPage + 1
@@ -233,21 +294,31 @@ class App extends Component {
 
     return (
       <div className="App">
-      <h1>Giphy App</h1>
         <SearchBar
           onSubmit={this.handleSubmit}
           onChange={this.handleChange}
           input={this.state.input}
+          lastQuery={this.state.lastQuery}
         />
-        <Pagination
+        {this.state.gifs.length > 0 && this.state.running &&
+          <Pagination
           next={this.next}
           prev={this.prev}
           perPage={this.state.perPage}
           currentPage={this.state.currentPage}
           currentSection={this.state.currentSection}
           gifAmt={this.state.gifs.length}
-        />
-        <Results gifsToRender={gifsToRender}/>
+        />}
+        <Results gifsToRender={gifsToRender} hasError={this.state.error}/>
+        {this.state.gifs.length > 0 && this.state.running &&
+          <Pagination
+          next={this.next}
+          prev={this.prev}
+          perPage={this.state.perPage}
+          currentPage={this.state.currentPage}
+          currentSection={this.state.currentSection}
+          gifAmt={this.state.gifs.length}
+        />}
       </div>
     );
   }
