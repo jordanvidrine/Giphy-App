@@ -10,8 +10,9 @@
 .SearchBar-text {
 	height: 85px;
 	width: 90%;
-	padding: 5px 5px 5px 10px;
+	padding: 5px 5px 5px 15px;
 	border: none;
+  border-radius: 0px;
 	font-size: 25px;
   font-family: 'Source Sans Pro', sans-serif;
 }
@@ -20,6 +21,7 @@
   padding: 5px;
   height: 95px;
   width: 10%;
+  border-radius: 0px;
   border: none;
   cursor: pointer;
   background-color: #ffe066;

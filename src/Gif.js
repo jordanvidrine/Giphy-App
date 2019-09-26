@@ -18,7 +18,7 @@ class Gif extends Component {
 
     return (
       <div className="Gif" data-clipboard-text={this.props.gifUrl}>
-        <video className="Gif-media" autoPlay loop>
+        <video className="Gif-media" autoPlay muted loop>
           <source src={this.props.imgSrc} type="video/mp4"/>
         </video>
         <div data-link={this.props.gifUrl} className="Gif-copy" title="Copy to clipboard" style={backgroundColor} onClick={this.props.onClick}><i className="far fa-copy fa-3x Gif-icon"></i></div>
