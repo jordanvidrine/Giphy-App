@@ -17,6 +17,7 @@ class App extends Component {
       limit: 75,
       error: false,
       running: false,
+      timeOut: null,
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -24,6 +25,8 @@ class App extends Component {
     this.next = this.next.bind(this);
     this.copyAlert = this.copyAlert.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this);
+    this.submitAfterTyping = this.submitAfterTyping.bind(this);
   }
 
 // load 5 random gifs on page load
@@ -34,6 +37,8 @@ class App extends Component {
   async getGifs(type) {
     // Dont try when API limit is reached
     if (this.state.error) return false;
+    // Clear timeout if user presses enter before timeout finishes
+    if (this.state.timeOut !== null) clearTimeout(this.state.timeOut)
 
     // GET RANDOM GIFS ON LOAD
     if (type === 'onLoad') {
@@ -157,9 +162,22 @@ class App extends Component {
     })
   }
 
+  handleKeyUp() {
+    let delay = 1000;
+    if (this.state.timeOut !== null) clearTimeout(this.state.timeOut)
+    let timeOut = setTimeout(this.submitAfterTyping, delay)
+    this.setState({
+      ...this.state,
+      timeOut
+    })
+  }
+
+  submitAfterTyping() {
+    this.getGifs('query')
+  }
+
   handleKeyPress(e) {
     if (e.key === 'Enter') {
-      e.persist()
       this.handleSubmit(e)
     }
   }
@@ -217,6 +235,7 @@ class App extends Component {
         <SearchBar
           onSubmit={this.handleSubmit}
           onKeyPress={this.handleKeyPress}
+          onKeyUp={this.handleKeyUp}
           onChange={this.handleChange}
           input={this.state.input}
           lastQuery={this.state.lastQuery}
