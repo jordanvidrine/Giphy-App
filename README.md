@@ -1,5 +1,4 @@
-# Front-end Candidate Assignment
-You are building a GIF picker that allows users to search for a GIF and copy or share it
+My assignment was to build a GIF picker that allows users to search for a GIF and copy or share it
 to their favorite chat program. It should use GIPHY's API to generate GIFs. The API is limited to 42 requests per hour, 1000 per day. You need to make a free account, go to your developer dashboard, create an app, and that will provide you with the API key necessary.
 
 ## Requirements
